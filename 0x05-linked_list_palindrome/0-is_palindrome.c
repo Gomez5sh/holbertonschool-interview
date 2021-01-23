@@ -1,71 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "lists.h"
-
 /**
- * is_palindrome - check for palindrome
+ * recurPalindrome - checks if singly linked list is palindrome
+ * @left: pointer to head of singly linked list
+ * @right: head of singly linked list
  *
- * @head: head of list
- *
- * Return: 1 if True
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
  */
 
+int recurPalindrome(listint_t **left, listint_t *right)
+{
+	int ret;
+
+	if (right == NULL)
+		return (1);
+
+	ret = recurPalindrome(left, right->next);
+	if (ret == 0)
+		return (0);
+
+	ret = (right->n == (*left)->n);
+
+	*left = (*left)->next;
+
+	return (ret);
+}
+/**
+ * is_palindrome - checks if singly linked list is palindrome
+ * @head: pointer to head of singly linked list
+ *
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
+ */
 int is_palindrome(listint_t **head)
 {
-  listint_t **arr = NULL;
-  listint_t *aba = NULL;
-  int nexn = 0;
-
-  if (!head)
-    {
-      return (0);
-    }
-  if (!*head)
-    {
-      return (1);
-    }
-
-  arr = head;
-  aba = *head;
-  nexn = traverse(arr, aba);
-
-  return (nexn);
-}
-
-/**
- * traverse - Check for palindrome
- *
- * @arr: highest value
- * @aba: lowest value
- *
- * Return: 1 if True
- */
-
-int traverse(listint_t **arr, listint_t *aba)
-{
-  int nexn, result = -1;
-
-  if (aba == NULL)
-    {
-      return (1);
-    }
-
-  nexn = traverse(arr, aba->next);
-
-  if (nexn == 0)
-    {
-      return (0);
-    }
-  if ((*arr)->n == aba->n)
-    {
-      result = 1;
-    }
-  else
-    {
-      result = 0;
-    }
-
-  *arr = (*arr)->next;
-
-  return (result);
+	if (!head)
+		return (0);
+	return (recurPalindrome(head, *head));
 }
