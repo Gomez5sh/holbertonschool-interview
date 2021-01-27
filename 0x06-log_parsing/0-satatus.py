@@ -1,33 +1,45 @@
 #!/usr/bin/python3
-"""  reads stdin line by line and computes metrics
-"""
+
+""" script that reads stdin line by line and computes metrics """
+
 import sys
 
-i = 0
-num_files = 0
-num_string = ["200", "301", "400", "401", "403", "404", "405", "500"]
-callocs = [0, 0, 0, 0, 0, 0, 0, 0]
+
+def printsts(dic, size):
+    """ Prints information """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
+
+
+sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
+
+count = 0
+size = 0
 
 try:
-    for inputs in sys.stdin:
-        i += 1
-        split_input = inputs.split(" ")
-        if len(split_input) > 2:
-            num_files += int(split_input[-1])
-            status = split_input[-2]
-            if status in num_string:
-                j = num_string.index(status)
-                callocs[j] += 1
-        if (i % 10 == 0):
-            print("File size: {}".format(num_files))
-            for z in range(len(num_string)):
-                if callocs[z] > 0:
-                    print("{}: {}".format(num_string[z], callocs[z]))
-except KeyboardInterrupt:
-    pass
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            printsts(sts, size)
 
-finally:
-    print("File size: {}".format(num_files))
-    for z in range(len(num_string)):
-        if callocs[z] > 0:
-            print("{}: {}".format(num_string[z], callocs[z]))
+        stlist = line.split()
+        count += 1
+
+        try:
+            size += int(stlist[-1])
+        except:
+            pass
+
+        try:
+            if stlist[-2] in sts:
+                sts[stlist[-2]] += 1
+        except:
+            pass
+    printsts(sts, size)
+
+
+except KeyboardInterrupt:
+    printsts(sts, size)
+    raise
