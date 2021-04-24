@@ -1,20 +1,24 @@
 #!/usr/bin/python3
 
-
 def canUnlockAll(boxes):
-    """Main funtion"""
-    for key in range(1, len(boxes) - 1):
+    canUnlockAll = False
+    keys = {0: True}
+    n_boxes = len(boxes)
+    while(True):
 
-        boole = False
+        n_keys = len(keys)
 
-        for position in range(len(boxes)):
+        for i in range(len(boxes)):
+            if boxes[i] and keys.get(i, False):
+                for j in boxes[i]:
+                    if j < n_boxes:
+                        keys[j] = True
+                    boxes[i] = None
 
-            boole = (key in boxes[position] and key != position)
+        if not(len(keys) > n_keys):
+            break
 
-            if boole is True:
-                break
+    if n_keys == len(boxes):
+        canUnlockAll = True
 
-        if boole is False:
-            return boole
-
-    return True
+    return canUnlockAll
