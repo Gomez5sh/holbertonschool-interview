@@ -56,7 +56,7 @@ char **alloc_grid(int width, int height)
 		p = (char **)malloc(sizeof(char *) * height);
 		if (p == NULL)
 			return (NULL);
-		for (i = 0; i <  height; i++)
+		for (i = 0; i < height; i++)
 		{
 			p[i] = (char *)malloc((width) * sizeof(char));
 			if (p[i] == NULL)
@@ -92,7 +92,6 @@ char **hole_maker(char **p, int size, char **p_test, int size_test)
 	{
 		for (j = hole; j < 2 * hole; j++)
 			p[j][i] = 32;
-
 	}
 	if (size > 1)
 	{
@@ -107,7 +106,6 @@ char **hole_maker(char **p, int size, char **p_test, int size_test)
 			hole_maker(p + k * (size / 3), size / 3, p_test, size_test);
 			rotate(p + k * (size / 3), size / 3);
 		}
-
 	}
 	return (p);
 }
